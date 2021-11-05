@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User API</title>
+    
+</head>
+<body onload="getData()">
+  <h1>Syed Muhammad Musab </h1>
+    
+    <input type="text" name="name" id="name" placeholder="Enter you name:">
+    <input type="text" name="email" id="email" placeholder="Enter your email:">
+    <input type="text" name="address" id="address" placeholder="Enter your Address:">
+    <button onclick="postData()">Submit</button>
+  
+   
+      <br>
+    
+        
+    
+    <div>
+        <input type="number" name="id" id="aid" placeholder="Enter ID to delete">
+        <button onclick="deleteData()">Delete</button>
+    </div>
+
+
+
+    <table  id="data-table">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+      <div>
+        <h2>Update the Data </h2>
+        <input type="number" name="" id="uid" placeholder="enter ID:">
+        <input type="text" name="name" id="name1" placeholder="Enter the Name:">
+        <input type="text" name="email" id="email1" placeholder="Enter the Email">
+        <input type="text" name="address" id="address1" placeholder="Enter the Address">
+        <button onclick="updateData()">Update</button>
+
+      </div>
+
+
+<script>
+    
+    function postData(){
+    var name=document.getElementById("name").value;
+    var email=document.getElementById("email").value;
+    var address=document.getElementById("address").value;
+        axios.post("https://api-user-get.herokuapp.com/user",{
+        name:name,
+        email:email,
+        address:address
+
+       }).then((res)=>{
+        console.log("created Successfully")
+        // getData()
+        location.reload()
+
+    }).catch((e)=>{
+        console.log(e)
+    })
+        console.log(name,email,address)
+
+
+    }
+function getData(){
+
+
+
+    // let a=5
+    let dataTable = document.getElementById("data-table");
+    axios.get('https://api-user-get.herokuapp.com/users')
+  .then(function (response) {
+    // handle success
+    response.data.map((v,i)=>{
+        dataTable.innerHTML += `<tr>
+          <td>${v.name}</td>
+          <td>${v.email}</td>
+          <td>${v.address}</td>
+        </tr>`
+    })
+    
+    console.log(response.data);
+
+    
+  })
+}
+function deleteData(){
+    let id = document.getElementById("aid").value;
+    console.log(id);
+    axios.delete(`https://api-user-get.herokuapp.com/user/${id}`)
+    .then((res)=>{
+        console.log("Deleted Successfully" ,res)
+        // getData();
+        location.reload()
+    }).catch((e)=>{
+        console.log(e)
+    })
+}    
+
+const updateData  = async() => {
+  var id=document.getElementById("uid").value;
+  console.log(id);
+  var name=document.getElementById("name1").value;
+  var email=document.getElementById("email1").value;
+  var address=document.getElementById("address1").value;
+
+
+  if (name) { axios.put(`https://api-user-get.herokuapp.com/user/${id}`, { name }).then(res => location.reload()); }
+  if (email) { axios.put(`https://api-user-get.herokuapp.com/user/${id}`, { email }).then(res => location.reload()); }
+  if (address) { axios.put(`https://api-user-get.herokuapp.com/user/${id}`, { address }).then(res => location.reload()); }
+
+  // fetch(`https://assigment-api-hammad.herokuapp.com/user/${id}`,{
+  //   method:"PUT",
+  //   body:JSON.stringify({
+  //     name:name,
+  //     email:email,
+  //     address:address
+  //   })
+
+  // }).then(()=>{
+  //   console.log("updated");
+  // }).catch((e)=>{
+  //   console.log(e);
+  // })
+  
+  
+  // const res = await axios.put(`https://assigment-api-hammad.herokuapp.com/user/${id}`, { 
+  //   name:name,
+  //   email:email,
+  //   address:address
+
+  //  });
+
+  // console.log(res); // { hello: 'world' }
+
+  // axios.put(`https://assigment-api-hammad.herokuapp.com/user/${id}`,{
+  //       name:name,
+  //       email:email,
+  //       address:address
+  // }).then((res)=>{
+  //       console.log(" Updated Successfully")
+  //       // getData()
+  //       location.reload()
+
+  //   }).catch((e)=>{
+  //       console.log(e)
+  //   })
+
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</body>
+</html>
