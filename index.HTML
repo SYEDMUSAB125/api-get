@@ -22,7 +22,7 @@
         
     
     <div>
-        <input type="number" name="id" id="id" placeholder="Enter ID to delete">
+        <input type="number" name="id" id="uid" placeholder="Enter ID to delete">
         <button onclick="deleteData()">Delete</button>
     </div>
 
@@ -93,7 +93,7 @@ function getData(){
   })
 }
 function deleteData(){
-    let id = document.getElementById("id").value;
+    let id = document.getElementById("uid").value;
     axios.delete(`https://assigment-api-hammad.herokuapp.com/user/${id}`)
     .then((res)=>{
         console.log("Deleted Successfully")
